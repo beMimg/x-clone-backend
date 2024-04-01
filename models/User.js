@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { DateTime } = require("luxon");
+const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
   first_name: {
@@ -24,18 +25,8 @@ const userSchema = new mongoose.Schema({
   profile_pic_src: {
     type: String,
   },
-  followings: [
-    {
-      contentType: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
-  followers: [
-    {
-      contentType: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
+  followings: { type: Array, contentType: Schema.Types.ObjectId, ref: "User" },
+  followers: { type: Array, contentType: Schema.Types.ObjectId, ref: "User" },
   password: {
     type: String,
     required: true,
