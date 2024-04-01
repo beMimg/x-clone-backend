@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { DateTime } = require("luxon");
 
 const userSchema = new mongoose.Schema({
-  name: {
+  first_name: {
     type: String,
     required: true,
   },
