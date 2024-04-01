@@ -61,7 +61,7 @@ exports.create = [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const existsUsername = await User.find({ usernameLowerCase });
+    const existsUsername = await User.findOne({ usernameLowerCase });
 
     if (existsUsername) {
       return res.status(409).json({ errors: "Username already exists" });
