@@ -5,7 +5,9 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
 require("dotenv").config();
+
 // routes
+const apiRouter = require("./routes/api");
 
 var app = express();
 
@@ -31,7 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // API route
-
+app.use("/api", apiRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
