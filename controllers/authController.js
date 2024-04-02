@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const User = require("../models/User");
 
-exports.handleLogin = async (req, res) => {
+exports.handleLogin = async (req, res, next) => {
   try {
     const usernameLowerCase = req.body.username.toLowerCase();
 
