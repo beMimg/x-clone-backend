@@ -12,7 +12,7 @@ const apiRouter = require("./routes/api");
 var app = express();
 
 // connection to database
-async function main() {
+async function main(req, res, next) {
   try {
     console.log("connecting to database");
     await mongoose.connect(process.env.MONGODB_URI);
