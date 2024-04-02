@@ -34,9 +34,12 @@ exports.handleLogin = async (req, res, next) => {
     await User.findByIdAndUpdate(user._id, { refreshToken });
 
     // this is not available to javascript, it's more secure.
+    // SameSite prevents the browser from sending this cookie along with cross-site requests, so set to none.
+    // secure: true means the cookie is only sent over httpss
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: "None",
+      secure: true,
     });
     res.status(200).json({ accessToken });
   } catch (err) {

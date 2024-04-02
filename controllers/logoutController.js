@@ -12,12 +12,20 @@ exports.logout = async (req, res, next) => {
     const user = await User.findOne({ refreshToken: refreshToken });
 
     if (!user) {
-      res.clearCookie("jwt", { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+      res.clearCookie("jwt", {
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+      });
       return res.sendStatus(204);
     }
 
     // Delete the cookie from client browser
-    res.clearCookie("jwt", { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }); // secure: true for https
+    /* 
+    Usually when deleting a cookie, you need to pass all the same options that were set when creating the cookie,
+    but maxAge is one of the few exceptions.    
+    */
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
     // Delete the refresh token in the database
     user.refreshToken = null;
     await user.save();
