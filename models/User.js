@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
   date: {
     type: Date,
   },
+  refreshToken: {
+    type: String,
+    default: null,
+  },
 });
 
 userSchema.virtual("utc_creation").get(function () {
