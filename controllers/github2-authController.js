@@ -3,6 +3,7 @@ const GitHubStrategy = require("passport-github2").Strategy;
 const User = require("../models/User");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
+
 passport.use(
   new GitHubStrategy(
     {
