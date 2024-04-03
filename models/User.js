@@ -10,7 +10,6 @@ const userSchema = new mongoose.Schema({
   githubId: {
     type: String,
   },
-
   email: {
     type: String,
     required: true,
