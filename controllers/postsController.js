@@ -75,3 +75,27 @@ exports.likePost = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.deslikePost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.post_id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not foun" });
+    }
+
+    const likeIndex = post.likes.indexOf(req.user._id);
+
+    // indexOf returns -1 if doesn't find the element
+    if (likeIndex < 0) {
+      return res.status(409).json({ message: "You didn't like this post" });
+    }
+
+    // remove the user._id from the post.likes array
+    post.likes.splice(likeIndex, 1);
+    await post.save();
+    res.status(200).json({ message: "You desliked this post" });
+  } catch (err) {
+    return next(err);
+  }
+};
