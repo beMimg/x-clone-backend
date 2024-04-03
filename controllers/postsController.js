@@ -28,3 +28,27 @@ exports.createPost = [
     }
   },
 ];
+
+exports.deletePost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.post_id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // equals method provided by Mongoose to compare objectIDs, this method checks if two objectIDs are the same, regardless of wheter they are strings or ObjectIDs
+    const isAuthor = post.author._id.equals(req.user._id);
+
+    if (!isAuthor) {
+      return res
+        .status(403)
+        .json({ message: "You are not the author of this post" });
+    }
+
+    await post.deleteOne();
+    res.status(200).json({ message: "You have deleted this post" });
+  } catch (err) {
+    return next(err);
+  }
+};
