@@ -26,3 +26,5 @@ const postSchema = new mongoose.Schema({
 postSchema.virtual("utc_timestamp").get(function () {
   return DateTime.fromJSDate(this.timestamp).toUTC().toISO();
 });
+
+module.exports = mongoose.model("Post", postSchema);
