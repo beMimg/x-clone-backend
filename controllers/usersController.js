@@ -98,10 +98,41 @@ exports.getUser = async (req, res, next) => {
     const user = await User.findById(req.params.user_id, "-password -githubId");
 
     if (!user) {
-      return res.sendStatus(404).json({ message: "User not found" }); // Not found
+      return res.status(404).json({ message: "User not found" }); // Not found
     }
 
     res.status(200).json({ user });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.followUser = async (req, res, next) => {
+  try {
+    const followUserTarget = await User.findById(
+      req.params.user_id,
+      "-password"
+    );
+
+    if (!followUserTarget) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    console.log(followUserTarget.followers);
+    const isFollowed = followUserTarget.followers.includes(req.user._id);
+    console.log(req.user);
+
+    const isFollowing = req.user.followings.includes(followUserTarget._id);
+    if (isFollowed || isFollowing) {
+      return res.status(409).json({ message: "Already following this user" }); // Conflict status
+    }
+
+    req.user.followings.push(followUserTarget._id);
+    followUserTarget.followers.push(req.user._id);
+
+    await Promise.all([req.user.save(), followUserTarget.save()]);
+    res
+      .status(200)
+      .json({ message: `You have followed ${followUserTarget.username}` });
   } catch (err) {
     return next(err);
   }
