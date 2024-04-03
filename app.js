@@ -9,6 +9,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 // routes
 const apiRouter = require("./routes/api");
+const passport = require("passport");
 
 var app = express();
 
@@ -28,6 +29,7 @@ main();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+// session middleware
 app.use(
   session({
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
@@ -38,6 +40,12 @@ app.use(
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }, // 1 week
   })
 );
+
+// passport middleware
+require("./controllers/local-authController");
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

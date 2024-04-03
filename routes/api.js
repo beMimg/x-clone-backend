@@ -1,17 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const usersRoute = require("./users");
-const loginRoute = require("./auth");
-const refreshRoute = require("./refresh");
-const logoutRoute = require("./logout");
+const authRoute = require("./auth");
 
 router.get("/", function (req, res, next) {
   res.status(200).send({ message: "Api route" });
 });
 
 router.use("/users", usersRoute);
-router.use("/auth", loginRoute);
-router.use("/refresh", refreshRoute);
-router.use("/logout", logoutRoute);
-
+router.use("/auth", authRoute);
 module.exports = router;
