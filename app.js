@@ -8,7 +8,6 @@ require("dotenv").config();
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
-
 // routes
 const apiRouter = require("./routes/api");
 
@@ -44,6 +43,7 @@ app.use(
 
 // passport middleware
 require("./controllers/local-authController");
+require("./controllers/github2-authController");
 app.use(passport.initialize());
 app.use(passport.session());
 
