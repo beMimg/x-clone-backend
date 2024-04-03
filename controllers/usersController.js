@@ -117,11 +117,11 @@ exports.followUser = async (req, res, next) => {
     if (!followUserTarget) {
       return res.status(404).json({ message: "User not found" });
     }
-    console.log(followUserTarget.followers);
+
     const isFollowed = followUserTarget.followers.includes(req.user._id);
-    console.log(req.user);
 
     const isFollowing = req.user.followings.includes(followUserTarget._id);
+
     if (isFollowed || isFollowing) {
       return res.status(409).json({ message: "Already following this user" }); // Conflict status
     }
@@ -133,6 +133,42 @@ exports.followUser = async (req, res, next) => {
     res
       .status(200)
       .json({ message: `You have followed ${followUserTarget.username}` });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.deleteFollow = async (req, res, next) => {
+  try {
+    const userTarget = await User.findById(req.params.user_id);
+
+    if (!userTarget) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    /*
+     indexOf, returns the index of a given element in an array,
+     if that element doesn't exists it returns -1, for that reason,
+     we check if is <0 the target user is not beinf followed so the user
+     cannot unfollow.
+    */
+    const isFollowedIndex = userTarget.followers.indexOf(req.user._id);
+
+    const isFollowingIndex = req.user.followings.indexOf(userTarget._id);
+
+    // If the user is not following, cannot unfollow
+    if (isFollowedIndex < 0 && isFollowingIndex < 0) {
+      return res
+        .status(409)
+        .json({ message: "You are not following this user" });
+    }
+
+    // With the returned index from the indexOf, remove that id from the array.
+    userTarget.followers.splice(isFollowedIndex, 1);
+    req.user.followings.splice(isFollowingIndex, 1);
+
+    await Promise.all([req.user.save(), userTarget.save()]);
+    res.status(200).json({ message: `You unfollowed ${userTarget.username}` });
   } catch (err) {
     return next(err);
   }

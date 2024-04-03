@@ -15,4 +15,11 @@ router.post("/", usersController.create);
 // Create a follow
 router.post("/follow/:user_id", isAuthenticated, usersController.followUser);
 
+// Delete a follow
+router.delete(
+  "/follow/:user_id",
+  isAuthenticated,
+  usersController.deleteFollow
+);
+
 module.exports = router;
