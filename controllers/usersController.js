@@ -90,3 +90,17 @@ exports.create = [
     return res.status(201).json({ message: "User created" });
   },
 ];
+
+exports.getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.user_id, "-password -githubId");
+
+    if (!user) {
+      return res.sendStatus(404).json({ message: "User not found" }); // Not found
+    }
+
+    res.status(200).json({ user });
+  } catch (err) {
+    return next(err);
+  }
+};
