@@ -6,4 +6,6 @@ router.post("/", postsController.createPost);
 
 router.delete("/:post_id", postsController.deletePost);
 
+router.post("/:post_id/like", postsController.likePost);
+
 module.exports = router;

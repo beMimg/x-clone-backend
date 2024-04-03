@@ -52,3 +52,26 @@ exports.deletePost = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.likePost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.post_id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const isLiked = post.likes.includes(req.user._id);
+
+    if (isLiked) {
+      return res.status(409).json({ message: "You already like this post" });
+    }
+
+    post.likes.push(req.user._id);
+    await post.save();
+    // sends the updatePost with updated likes
+    res.status(200).json({ message: "You liked this post", post: post });
+  } catch (err) {
+    return next(err);
+  }
+};
