@@ -5,7 +5,9 @@ const User = require("../models/User");
 
 exports.getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find({}, "username");
+    // $ne operator to find documents whera a field is not equal to a specified value
+    const users = await User.find({ _id: { $ne: req.user._id } }, "username");
+
     return res.json({ users: users });
   } catch (err) {
     return next(err);
