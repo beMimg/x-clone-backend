@@ -12,4 +12,7 @@ router.get("/:user_id", isAuthenticated, usersController.getUser);
 // Create a user
 router.post("/", usersController.create);
 
+// Create a follow
+router.post("/follow/:user_id", isAuthenticated, usersController.followUser);
+
 module.exports = router;
