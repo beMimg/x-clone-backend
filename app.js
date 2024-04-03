@@ -5,6 +5,8 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 // routes
 const apiRouter = require("./routes/api");
 
@@ -25,6 +27,17 @@ main();
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
+
+app.use(
+  session({
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+    secret: process.env.SESSION_SECRET,
+    collection: "sessions",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }, // 1 week
+  })
+);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
