@@ -7,9 +7,10 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
+const passport = require("passport");
+
 // routes
 const apiRouter = require("./routes/api");
-const passport = require("passport");
 
 var app = express();
 

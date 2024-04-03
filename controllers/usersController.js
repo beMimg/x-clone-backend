@@ -6,7 +6,6 @@ const User = require("../models/User");
 exports.getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find({}, "username");
-    console.log(users);
     return res.json({ users: users });
   } catch (err) {
     return next(err);
