@@ -2,6 +2,31 @@ const Post = require("../models/Post");
 const PostComment = require("../models/PostComment");
 const { body, validationResult } = require("express-validator");
 
+exports.getAllComments = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.post_id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const allComments = await PostComment.find({ postId: post._id }).populate({
+      path: "author",
+      select: "username profile_pic_src",
+    });
+
+    if (allComments.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "No comments found for this post" });
+    }
+
+    res.status(200).json({ allComments });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.createComment = [
   body("text")
     .isLength({ min: 1 })
