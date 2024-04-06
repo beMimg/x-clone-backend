@@ -1,6 +1,20 @@
 const Post = require("../models/Post");
 const { body, validationResult } = require("express-validator");
 
+exports.getAllPosts = async (req, res, next) => {
+  try {
+    const posts = await Post.find().sort({ timestamp: -1 });
+
+    if (!posts) {
+      return res.status(404).json({ message: "Posts not found" });
+    }
+
+    res.status(200).json({ posts });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.createPost = [
   body("text")
     .isLength({ max: 300 })
