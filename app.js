@@ -8,6 +8,7 @@ require("dotenv").config();
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
+const cors = require("cors");
 // routes
 const apiRouter = require("./routes/api");
 
@@ -46,7 +47,7 @@ require("./controllers/local-authController");
 require("./controllers/github2-authController");
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
