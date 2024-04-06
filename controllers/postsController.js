@@ -15,6 +15,23 @@ exports.getAllPosts = async (req, res, next) => {
   }
 };
 
+exports.getOnePost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.post_id).populate({
+      path: "likes",
+      select: "username profile_pic_src",
+    });
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json({ post });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.createPost = [
   body("text")
     .isLength({ max: 300 })
