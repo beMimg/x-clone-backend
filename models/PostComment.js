@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const { DateTime } = require("luxon");
 
 const postCommentSchema = new Schema({
   author: {
@@ -21,6 +22,14 @@ const postCommentSchema = new Schema({
     content: Schema.Types.ObjectId,
     ref: "User",
   },
+  timestamp: {
+    type: Date,
+    required: true,
+  },
+});
+
+postCommentSchema.virtual("utc_timestamp").get(function () {
+  return DateTime.fromJSDate(this.timestamp).toUTC().toISO();
 });
 
 module.exports = mongoose.model("PostComment", postCommentSchema);
