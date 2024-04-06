@@ -8,4 +8,8 @@ router.get("/", postsCommentsController.getAllComments);
 
 router.post("/", postsCommentsController.createComment);
 
+// get a specific comment
+router.get("/:comment_id", postsCommentsController.getComment);
+
+router.post("/:comment_id/like", postsCommentsController.likeComment);
 module.exports = router;

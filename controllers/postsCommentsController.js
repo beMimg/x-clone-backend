@@ -10,10 +10,14 @@ exports.getAllComments = async (req, res, next) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const allComments = await PostComment.find({ postId: post._id }).populate({
-      path: "author",
-      select: "username profile_pic_src",
-    });
+    const allComments = await PostComment.find({ postId: post._id })
+      .populate({
+        path: "author",
+        select: "username profile_pic_src",
+      })
+      .sort({
+        createdAt: -1,
+      });
 
     if (allComments.length === 0) {
       return res
@@ -61,3 +65,20 @@ exports.createComment = [
     }
   },
 ];
+
+exports.getComment = async (req, res, next) => {
+  try {
+    const comment = await PostComment.findById(req.params.comment_id).populate({
+      path: "likes",
+      select: "profile_pic_src username",
+    });
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    res.status(200).json({ comment });
+  } catch (err) {
+    return next(err);
+  }
+};
