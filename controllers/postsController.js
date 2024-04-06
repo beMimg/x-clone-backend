@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const { body, validationResult } = require("express-validator");
+const PostComment = require("../models/PostComment");
 
 exports.getAllPosts = async (req, res, next) => {
   try {
@@ -77,7 +78,12 @@ exports.deletePost = async (req, res, next) => {
         .json({ message: "You are not the author of this post" });
     }
 
-    await post.deleteOne();
+    // also delete all comments and likes in this post
+    await Promise.all([
+      post.deleteOne(),
+      PostComment.deleteMany({ postId: post._id }),
+    ]);
+
     res.status(200).json({ message: "You have deleted this post" });
   } catch (err) {
     return next(err);
