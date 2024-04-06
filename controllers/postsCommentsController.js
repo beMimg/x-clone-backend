@@ -82,3 +82,38 @@ exports.getComment = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.likeComment = async (req, res, next) => {
+  try {
+    const comment = await PostComment.findById(req.params.comment_id);
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    comment.likes.push(req.user._id);
+    await comment.save();
+    res.status(200).json({ message: "You liked this comment" });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.deslikeComment = async (req, res, next) => {
+  try {
+    const comment = await PostComment.findById(req.params.comment_id);
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    // the index of the user._id in the likes array
+    const authorIndex = comment.likes.indexOf(req.user._id);
+
+    comment.likes.splice(authorIndex, 1);
+    await comment.save();
+    res.status(200).json({ message: "You desliked this comment." });
+  } catch (err) {
+    return next(err);
+  }
+};
