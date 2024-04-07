@@ -5,6 +5,13 @@ const router = express.Router();
 const utils = require("../utils/utils");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const { cookie } = require("express-validator");
+const jwt = require("jsonwebtoken");
+const {
+  handleRefreshToken,
+} = require("../controllers/refresh-tokenController");
+
+router.get("/refresh", handleRefreshToken);
 
 router.post("/", async (req, res, next) => {
   try {
@@ -22,6 +29,7 @@ router.post("/", async (req, res, next) => {
     if (!passwordMatch) {
       return res.status(401).json({ message: "Invalid password" });
     }
+    console.log(user);
 
     const accessToken = utils.generateAccessToken(user);
 
@@ -29,7 +37,6 @@ router.post("/", async (req, res, next) => {
 
     user.refreshToken = refreshToken.token;
     await user.save();
-
     // Set the refresh token in the cookie with httpOnly and secure flag
     // httpOnly flag makes sure that the cookie is not accessible via JavaScript
     // This refreshToken will be used to generate a new access token when the current access token expires
