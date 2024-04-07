@@ -2,7 +2,7 @@ const express = require("express");
 const passport = require("passport");
 const { authenticate } = require("passport");
 const router = express.Router();
-const generateToken = require("../utils/utils");
+const utils = require("../utils/utils");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 
@@ -23,12 +23,26 @@ router.post("/", async (req, res, next) => {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    const jwtIssued = generateToken(user);
+    const accessToken = utils.generateAccessToken(user);
 
-    return res.json({
+    const refreshToken = utils.generateRefreshToken(user);
+
+    user.refreshToken = refreshToken.token;
+    await user.save();
+
+    // Set the refresh token in the cookie with httpOnly and secure flag
+    // httpOnly flag makes sure that the cookie is not accessible via JavaScript
+    // This refreshToken will be used to generate a new access token when the current access token expires
+    res.cookie("jwt", refreshToken.token, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 604800000,
+    });
+
+    res.json({
       user: user.username,
-      token: jwtIssued.token,
-      expiresIn: jwtIssued.expiresIn,
+      accessToken: accessToken.token,
+      expiresIn: accessToken.expiresIn,
     });
   } catch (err) {
     return next(err);
