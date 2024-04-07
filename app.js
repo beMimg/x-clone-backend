@@ -47,7 +47,7 @@ require("./controllers/local-authController");
 require("./controllers/github2-authController");
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

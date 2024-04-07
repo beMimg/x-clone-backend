@@ -4,7 +4,7 @@ const { authenticate } = require("passport");
 const router = express.Router();
 
 router.post("/", passport.authenticate("local"), (req, res) => {
-  res.status(200).send({ message: "Authenticated", user: req.user });
+  res.status(200).send({ message: "Authenticated", user: req.user.username });
 });
 
 router.get(
@@ -17,7 +17,7 @@ router.get(
   passport.authenticate("github", { failureRedirect: "/login" }),
   function (req, res) {
     // Successful authentication, redirect home.
-    res.json({ message: "Authenticated", user: req.user });
+    res.json({ message: "Authenticated", user: req.user.username });
   }
 );
 
