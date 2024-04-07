@@ -63,14 +63,28 @@ router.get(
     session: false,
     failureRedirect: "/login",
   }),
-  function (req, res) {
+  async function (req, res) {
     const user = req.user;
-    const jwtIssued = generateToken(user);
+    const accessToken = utils.generateAccessToken(user);
 
-    return res.json({
+    const refreshToken = utils.generateRefreshToken(user);
+
+    user.refreshToken = refreshToken.token;
+    await user.save();
+
+    // Set the refresh token in the cookie with httpOnly and secure flag
+    // httpOnly flag makes sure that the cookie is not accessible via JavaScript
+    // This refreshToken will be used to generate a new access token when the current access token expires
+    res.cookie("jwt", refreshToken.token, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 604800000,
+    });
+
+    res.json({
       user: user.username,
-      token: jwtIssued.token,
-      expiresIn: jwtIssued.expiresIn,
+      accessToken: accessToken.token,
+      expiresIn: accessToken.expiresIn,
     });
   }
 );
