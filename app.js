@@ -5,8 +5,6 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
 require("dotenv").config();
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const cors = require("cors");
 // routes
@@ -30,23 +28,11 @@ main();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-// session middleware
-app.use(
-  session({
-    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
-    secret: process.env.SESSION_SECRET,
-    collection: "sessions",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }, // 1 week
-  })
-);
-
 // passport middleware
 require("./controllers/local-authController");
 require("./controllers/github2-authController");
 app.use(passport.initialize());
-app.use(passport.session());
+
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(logger("dev"));
 app.use(express.json());
