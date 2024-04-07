@@ -29,8 +29,9 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 // passport middleware
-require("./controllers/local-authController");
 require("./controllers/github2-authController");
+require("./controllers/jwt-authController");
+
 app.use(passport.initialize());
 
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
