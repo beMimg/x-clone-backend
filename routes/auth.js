@@ -28,7 +28,7 @@ router.post("/", async (req, res, next) => {
     return res.json({
       user: user.username,
       token: jwtIssued.token,
-      expiesIn: jwtIssued.expiresIn,
+      expiresIn: jwtIssued.expiresIn,
     });
   } catch (err) {
     return next(err);
@@ -44,8 +44,14 @@ router.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/login" }),
   function (req, res) {
-    // Successful authentication, redirect home.
-    res.json({ message: "Authenticated", user: req.user.username });
+    const user = req.user;
+    const jwtIssued = generateToken(user);
+
+    return res.json({
+      user: user.username,
+      token: jwtIssued.token,
+      expiresIn: jwtIssued.expiresIn,
+    });
   }
 );
 

@@ -1,24 +1,36 @@
 var express = require("express");
 var router = express.Router();
 const usersController = require("../controllers/usersController");
-const isAuthenticated = require("../middleware/isAuthenticated");
+const passport = require("passport");
 
 // Get all users
-router.get("/", isAuthenticated, usersController.getAllUsers);
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  usersController.getAllUsers
+);
 
 // Get specific user
-router.get("/:user_id", isAuthenticated, usersController.getUser);
+router.get(
+  "/:user_id",
+  passport.authenticate("jwt", { session: false }),
+  usersController.getUser
+);
 
 // Create a user
 router.post("/", usersController.create);
 
 // Create a follow
-router.post("/follow/:user_id", isAuthenticated, usersController.followUser);
+router.post(
+  "/follow/:user_id",
+  passport.authenticate("jwt", { session: false }),
+  usersController.followUser
+);
 
 // Delete a follow
 router.delete(
   "/follow/:user_id",
-  isAuthenticated,
+  passport.authenticate("jwt", { session: false }),
   usersController.deleteFollow
 );
 
