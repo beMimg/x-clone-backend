@@ -4,7 +4,12 @@ const PostComment = require("../models/PostComment");
 
 exports.getAllPosts = async (req, res, next) => {
   try {
-    const posts = await Post.find().sort({ timestamp: -1 });
+    const posts = await Post.find()
+      .sort({ timestamp: -1 })
+      .populate({
+        path: "author",
+        select: "first_name username profile_pic_src",
+      });
 
     if (!posts) {
       return res.status(404).json({ message: "Posts not found" });
