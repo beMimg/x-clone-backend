@@ -5,7 +5,6 @@ const router = express.Router();
 const utils = require("../utils/utils");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
-const { cookie } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const {
   handleRefreshToken,
@@ -29,7 +28,6 @@ router.post("/", async (req, res, next) => {
     if (!passwordMatch) {
       return res.status(401).json({ message: "Invalid password" });
     }
-    console.log(user);
 
     const accessToken = utils.generateAccessToken(user);
 
@@ -88,11 +86,9 @@ router.get(
       maxAge: 604800000,
     });
 
-    res.json({
-      user: user.username,
-      accessToken: accessToken.token,
-      expiresIn: accessToken.expiresIn,
-    });
+    res.cookie("accessToken", accessToken.token, { maxAge: 300000 }); //5min
+
+    res.redirect("http://localhost:5173/socials-saving");
   }
 );
 

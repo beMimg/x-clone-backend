@@ -8,7 +8,7 @@ exports.generateAccessToken = (user) => {
     username: user.username,
   };
 
-  const duration = "30s";
+  const duration = "5m";
 
   const signedToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
     expiresIn: duration,

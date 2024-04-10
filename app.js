@@ -34,7 +34,8 @@ require("./controllers/jwt-authController");
 
 app.use(passport.initialize());
 
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+const allowedDomains = ["http://localhost:5173", "http://localhost:4173"];
+app.use(cors({ credentials: true, origin: allowedDomains }));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

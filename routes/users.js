@@ -12,6 +12,12 @@ router.get(
 
 // Get specific user
 router.get(
+  "/self",
+  passport.authenticate("jwt", { session: false }),
+  usersController.getSelf
+);
+
+router.get(
   "/:user_id",
   passport.authenticate("jwt", { session: false }),
   usersController.getUser
