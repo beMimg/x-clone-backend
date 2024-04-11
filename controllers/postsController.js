@@ -4,12 +4,10 @@ const PostComment = require("../models/PostComment");
 
 exports.getAllPosts = async (req, res, next) => {
   try {
-    const posts = await Post.find()
-      .sort({ timestamp: -1 })
-      .populate({
-        path: "author",
-        select: "first_name username profile_pic_src",
-      });
+    const posts = await Post.find().sort({ timestamp: -1 }).populate({
+      path: "author",
+      select: "first_name username profile_pic_src numberOfComments",
+    });
 
     if (!posts) {
       return res.status(404).json({ message: "Posts not found" });
@@ -24,8 +22,8 @@ exports.getAllPosts = async (req, res, next) => {
 exports.getOnePost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.post_id).populate({
-      path: "likes",
-      select: "username profile_pic_src",
+      path: "author",
+      select: "username profile_pic_src first_name",
     });
 
     if (!post) {
@@ -56,6 +54,7 @@ exports.createPost = [
         author: req.user._id,
         text: req.body.text,
         timestamp: Date.now(),
+        numberOfComments: 0,
       });
 
       await newPost.save();

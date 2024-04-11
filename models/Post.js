@@ -21,6 +21,9 @@ const postSchema = new mongoose.Schema({
     contentType: Schema.Types.ObjectId,
     ref: "User",
   },
+  numberOfComments: {
+    type: Number,
+  },
 });
 
 postSchema.virtual("utc_timestamp").get(function () {

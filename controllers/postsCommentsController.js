@@ -13,7 +13,7 @@ exports.getAllComments = async (req, res, next) => {
     const allComments = await PostComment.find({ postId: post._id })
       .populate({
         path: "author",
-        select: "username profile_pic_src",
+        select: "username profile_pic_src first_name",
       })
       .sort({
         createdAt: -1,
@@ -58,6 +58,8 @@ exports.createComment = [
         text: req.body.text,
       });
 
+      post.numberOfComments = post.numberOfComments + 1;
+      await post.save();
       await comment.save();
       res.status(200).json({ message: "You've commented this post" });
     } catch (err) {
