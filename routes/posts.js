@@ -7,9 +7,11 @@ router.get("/", postsController.getAllPosts);
 
 router.post("/", postsController.createPost);
 
-router.get("/self", postsController.getAllPostsByUser);
-
 router.get("/liked", postsController.getLikedPosts);
+
+router.get("/user/:user_id", postsController.getAllPostsByAUser);
+
+router.get("/user/:user_id/likes", postsController.getPostsLikedByAUser);
 
 router.get("/:post_id", postsController.getOnePost);
 

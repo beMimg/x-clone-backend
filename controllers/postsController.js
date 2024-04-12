@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const { body, validationResult } = require("express-validator");
 const PostComment = require("../models/PostComment");
+const User = require("../models/User");
 
 exports.getAllPosts = async (req, res, next) => {
   try {
@@ -141,9 +142,9 @@ exports.deslikePost = async (req, res, next) => {
   }
 };
 
-exports.getAllPostsByUser = async (req, res, next) => {
+exports.getLikedPosts = async (req, res, next) => {
   try {
-    const posts = await Post.find({ author: req.user._id })
+    const posts = await Post.find({ likes: req.user._id })
       .sort({ timestamp: -1 })
       .populate("author");
 
@@ -157,16 +158,29 @@ exports.getAllPostsByUser = async (req, res, next) => {
   }
 };
 
-exports.getLikedPosts = async (req, res, next) => {
+exports.getAllPostsByAUser = async (req, res, next) => {
   try {
-    const posts = await Post.find({ likes: req.user._id })
-      .sort({ timestamp: -1 })
-      .populate("author");
-
+    const posts = await Post.find({ author: req.params.user_id }).populate(
+      "author"
+    );
     if (!posts) {
       return res.status(404).json({ message: "Posts not found" });
     }
+    res.status(200).json({ posts });
+  } catch (err) {
+    return next(err);
+  }
+};
 
+exports.getPostsLikedByAUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.user_id);
+
+    const posts = await Post.find({ likes: user._id }).populate("author");
+    console.log(posts);
+    if (!posts) {
+      return res.status(404).json({ message: "Posts not found" });
+    }
     res.status(200).json({ posts });
   } catch (err) {
     return next(err);
