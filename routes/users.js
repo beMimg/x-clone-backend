@@ -16,6 +16,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   usersController.getSelf
 );
+router.post("/", usersController.create);
 
 router.get(
   "/:user_id",
@@ -24,7 +25,6 @@ router.get(
 );
 
 // Create a user
-router.post("/", usersController.create);
 
 // Create a follow
 router.post(

@@ -7,6 +7,10 @@ router.get("/", postsController.getAllPosts);
 
 router.post("/", postsController.createPost);
 
+router.get("/self", postsController.getAllPostsByUser);
+
+router.get("/liked", postsController.getLikedPosts);
+
 router.get("/:post_id", postsController.getOnePost);
 
 router.delete("/:post_id", postsController.deletePost);
