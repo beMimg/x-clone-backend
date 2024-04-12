@@ -140,3 +140,35 @@ exports.deslikePost = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.getAllPostsByUser = async (req, res, next) => {
+  try {
+    const posts = await Post.find({ author: req.user._id })
+      .sort({ timestamp: -1 })
+      .populate("author");
+
+    if (!posts) {
+      return res.status(404).json({ message: "Posts not found" });
+    }
+
+    res.status(200).json({ posts });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.getLikedPosts = async (req, res, next) => {
+  try {
+    const posts = await Post.find({ likes: req.user._id })
+      .sort({ timestamp: -1 })
+      .populate("author");
+
+    if (!posts) {
+      return res.status(404).json({ message: "Posts not found" });
+    }
+
+    res.status(200).json({ posts });
+  } catch (err) {
+    return next(err);
+  }
+};
