@@ -2,6 +2,7 @@ const { body, validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const { randomColor } = require("../utils/utils");
 
 exports.getAllUsers = async (req, res, next) => {
   try {
@@ -91,6 +92,7 @@ exports.create = [
     if (existsUsername) {
       return res.status(409).json({ errors: "Username already exists" });
     }
+    const randomProfileColor = randomColor();
 
     const user = new User({
       first_name: req.body.first_name,
@@ -99,6 +101,7 @@ exports.create = [
       usernameLowerCase: usernameLowerCase,
       password: hashedPassword,
       date: Date.now(),
+      profile_color: randomProfileColor,
     });
 
     await user.save();
