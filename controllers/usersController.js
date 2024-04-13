@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const { randomColor } = require("../utils/utils");
+const cloudinary = require("../utils/cloudinary");
 
 exports.getAllUsers = async (req, res, next) => {
   try {
@@ -186,6 +187,30 @@ exports.deleteFollow = async (req, res, next) => {
 
     await Promise.all([req.user.save(), userTarget.save()]);
     res.status(200).json({ message: `You unfollowed ${userTarget.username}` });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.updateProfilePic = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No image file provided" });
+    }
+
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path);
+
+    // Update user's profile_pic_src with the image URL
+    req.user.profile_pic_src = result.secure_url;
+
+    // Save the updated user
+    await req.user.save();
+
+    // Return success message with the updated user
+    return res
+      .status(200)
+      .json({ message: "Profile picture updated", user: req.user });
   } catch (err) {
     return next(err);
   }

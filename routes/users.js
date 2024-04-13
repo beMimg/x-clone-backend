@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const usersController = require("../controllers/usersController");
 const passport = require("passport");
+const upload = require("../utils/multer");
 
 // Get all users
 router.get(
@@ -39,6 +40,13 @@ router.delete(
   "/follow/:user_id",
   passport.authenticate("jwt", { session: false }),
   usersController.deleteFollow
+);
+
+router.put(
+  "/profile_pic",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  usersController.updateProfilePic
 );
 
 module.exports = router;
