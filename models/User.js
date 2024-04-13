@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
   date: {
     type: Date,
   },
-  profile_color: { type: String, required: true },
+  profile_color: { type: String },
   refreshToken: {
     type: String,
   },

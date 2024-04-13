@@ -16,6 +16,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   usersController.getSelf
 );
+
 router.post("/", usersController.create);
 
 router.get(

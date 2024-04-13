@@ -7,7 +7,8 @@ exports.getAllPosts = async (req, res, next) => {
   try {
     const posts = await Post.find().sort({ timestamp: -1 }).populate({
       path: "author",
-      select: "first_name username profile_pic_src numberOfComments",
+      select:
+        "first_name username profile_pic_src numberOfComments profile_color",
     });
 
     if (!posts) {

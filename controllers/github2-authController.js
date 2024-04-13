@@ -3,6 +3,7 @@ const GitHubStrategy = require("passport-github2").Strategy;
 const User = require("../models/User");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
+const { randomColor } = require("../utils/utils");
 
 passport.use(
   new GitHubStrategy(
@@ -16,6 +17,7 @@ passport.use(
       const password = crypto.randomBytes(32).toString("hex");
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await User.findOne({ githubId: profile.id });
+      const randomProfileColor = randomColor();
       if (!user) {
         const newUser = new User({
           first_name: profile.displayName,
@@ -26,6 +28,7 @@ passport.use(
           profile_pic_src: profile.photos[0].value,
           password: hashedPassword,
           date: new Date(),
+          profile_color: randomProfileColor,
         });
         await newUser.save();
         return done(null, newUser);
