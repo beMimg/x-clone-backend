@@ -11,6 +11,12 @@ router.get(
   usersController.getAllUsers
 );
 
+router.get(
+  "/top",
+  passport.authenticate("jwt", { session: false }),
+  usersController.getTopUsers
+);
+
 // Get specific user
 router.get(
   "/self",

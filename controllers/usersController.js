@@ -29,6 +29,37 @@ exports.getAllUsers = async (req, res, next) => {
   }
 };
 
+exports.getTopUsers = async (req, res, next) => {
+  try {
+    // Top users will be based in the number of followers.
+    const users = await User.aggregate([
+      {
+        $project: {
+          _id: 1,
+          first_name: 1,
+          profile_pic_src: 1,
+          profile_color: 1,
+          username: 1,
+          followersCount: { $size: "$followers" },
+          // create a proprety folowersCount with the size of followers array
+        },
+      },
+      {
+        // sort the followersCount by descending order
+        $sort: { followersCount: -1 },
+      },
+      {
+        // only the first 5
+        $limit: 6,
+      },
+    ]);
+
+    return res.status(200).json({ users });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.getSelf = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id, "-password -refreshToken");
