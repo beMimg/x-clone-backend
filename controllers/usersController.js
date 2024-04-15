@@ -8,9 +8,22 @@ const cloudinary = require("../utils/cloudinary");
 exports.getAllUsers = async (req, res, next) => {
   try {
     // $ne operator to find documents whera a field is not equal to a specified value
-    const users = await User.find({ _id: { $ne: req.user._id } }, "username");
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = 10;
+    const skip = (page - 1) * 10;
 
-    return res.json({ users: users });
+    const users = await User.find(
+      { _id: { $ne: req.user._id } },
+      "username first_name profile_pic_src profile_color"
+    )
+      .sort({ date: 1 })
+      .skip(skip)
+      .limit(pageSize);
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "There are no users yet." });
+    }
+    return res.status(200).json({ users: users });
   } catch (err) {
     return next(err);
   }
@@ -211,6 +224,42 @@ exports.updateProfilePic = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: "Profile picture updated", user: req.user });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.getUserFollowings = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.user_id, "followings").populate(
+      {
+        path: "followings",
+        select: "profile_color first_name username profile_pic_src",
+      }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ users: user.followings });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.getUserFollowers = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.user_id, "followers").populate({
+      path: "followers",
+      select: "profile_color first_name username profile_pic_src",
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ users: user.followers });
   } catch (err) {
     return next(err);
   }

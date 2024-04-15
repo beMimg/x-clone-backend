@@ -13,7 +13,7 @@ exports.getAllComments = async (req, res, next) => {
     const allComments = await PostComment.find({ postId: post._id })
       .populate({
         path: "author",
-        select: "username profile_pic_src first_name",
+        select: "username profile_pic_src first_name profile_color",
       })
       .sort({
         createdAt: -1,

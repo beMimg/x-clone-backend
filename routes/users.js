@@ -20,15 +20,13 @@ router.get(
 
 router.post("/", usersController.create);
 
-router.get(
-  "/:user_id",
+router.put(
+  "/profile_pic",
   passport.authenticate("jwt", { session: false }),
-  usersController.getUser
+  upload.single("image"),
+  usersController.updateProfilePic
 );
 
-// Create a user
-
-// Create a follow
 router.post(
   "/follow/:user_id",
   passport.authenticate("jwt", { session: false }),
@@ -42,11 +40,22 @@ router.delete(
   usersController.deleteFollow
 );
 
-router.put(
-  "/profile_pic",
+router.get(
+  "/:user_id",
   passport.authenticate("jwt", { session: false }),
-  upload.single("image"),
-  usersController.updateProfilePic
+  usersController.getUser
+);
+
+router.get(
+  "/:user_id/following",
+  passport.authenticate("jwt", { session: false }),
+  usersController.getUserFollowings
+);
+
+router.get(
+  "/:user_id/followers",
+  passport.authenticate("jwt", { session: false }),
+  usersController.getUserFollowers
 );
 
 module.exports = router;
