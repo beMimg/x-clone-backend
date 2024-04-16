@@ -163,27 +163,35 @@ exports.deslikePost = async (req, res, next) => {
   }
 };
 
-exports.getLikedPosts = async (req, res, next) => {
-  try {
-    const posts = await Post.find({ likes: req.user._id })
-      .sort({ timestamp: -1 })
-      .populate("author");
+// exports.getLikedPosts = async (req, res, next) => {
+//   try {
+//     const posts = await Post.find({ likes: req.user._id })
+//       .sort({ timestamp: -1 })
+//       .populate({
+//         path: "author",
+//         select: "profile_pic_src profile_color username first_name",
+//       });
 
-    if (!posts) {
-      return res.status(404).json({ message: "Posts not found" });
-    }
+//     console.log(posts);
+//     if (!posts) {
+//       return res.status(404).json({ message: "Posts not found" });
+//     }
 
-    res.status(200).json({ posts });
-  } catch (err) {
-    return next(err);
-  }
-};
+//     res.status(200).json({ posts });
+//   } catch (err) {
+//     return next(err);
+//   }
+// };
 
 exports.getAllPostsByAUser = async (req, res, next) => {
   try {
-    const posts = await Post.find({ author: req.params.user_id }).populate(
-      "author"
-    );
+    const posts = await Post.find({ author: req.params.user_id })
+      .sort({ timestamp: -1 })
+      .populate({
+        path: "author",
+        select: "profile_pic_src profile_color username first_name",
+      });
+    console.log(posts);
     if (!posts) {
       return res.status(404).json({ message: "Posts not found" });
     }
@@ -197,7 +205,12 @@ exports.getPostsLikedByAUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.user_id);
 
-    const posts = await Post.find({ likes: user._id }).populate("author");
+    const posts = await Post.find({ likes: user._id })
+      .sort({ timestamp: -1 })
+      .populate({
+        path: "author",
+        select: "profile_pic_src profile_color username first_name",
+      });
     console.log(posts);
     if (!posts) {
       return res.status(404).json({ message: "Posts not found" });

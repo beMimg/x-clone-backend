@@ -8,7 +8,7 @@ router.get("/", postsController.getAllPosts);
 
 router.post("/", upload.single("image"), postsController.createPost);
 
-router.get("/liked", postsController.getLikedPosts);
+// router.get("/liked", postsController.getLikedPosts);
 
 router.get("/user/:user_id", postsController.getAllPostsByAUser);
 
