@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-
+const crypto = require("crypto");
 // Access token has a short duration
 exports.generateAccessToken = (user) => {
   const payload = {
@@ -55,3 +55,29 @@ exports.randomColor = () => {
 
   return colors[randomNumber];
 };
+
+exports.getRandomName = () => {
+  const randomNames = [
+    "John",
+    "Everest",
+    "Elon",
+    "Elen",
+    "Fred",
+    "Jihn",
+    "Flor",
+    "Beauty",
+  ];
+
+  const randomNumber = Math.floor(Math.random() * randomNames.length);
+
+  return randomNames[randomNumber];
+};
+
+exports.getRandomUsername = (first_name) => {
+  const randomString = crypto.randomBytes(8).toString("hex");
+
+  const username = `${first_name}${randomString}`;
+  return username;
+};
+
+console.log(this.getRandomUsername("jeff"));

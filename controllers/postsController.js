@@ -25,7 +25,7 @@ exports.getOnePost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.post_id).populate({
       path: "author",
-      select: "username profile_pic_src first_name",
+      select: "username profile_pic_src first_name profile_color",
     });
 
     if (!post) {

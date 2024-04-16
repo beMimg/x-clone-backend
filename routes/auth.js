@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 const {
   handleRefreshToken,
 } = require("../controllers/refresh-tokenController");
+const guestController = require("../controllers/guestController");
 
 router.get("/refresh", handleRefreshToken);
 
@@ -92,4 +93,5 @@ router.get(
   }
 );
 
+router.post("/guest", guestController.createAndLogin);
 module.exports = router;
