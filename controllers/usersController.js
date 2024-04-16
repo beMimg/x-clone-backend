@@ -157,7 +157,10 @@ exports.create = [
 
 exports.getUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.user_id, "-password -githubId");
+    const user = await User.findById(
+      req.params.user_id,
+      "-password -githubId -refreshToken "
+    );
 
     if (!user) {
       return res.status(404).json({ message: "User not found" }); // Not found
