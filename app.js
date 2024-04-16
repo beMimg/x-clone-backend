@@ -7,6 +7,9 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const passport = require("passport");
 const cors = require("cors");
+const compression = require("compression");
+const helmet = require("helmet");
+
 // routes
 const apiRouter = require("./routes/api");
 
@@ -41,7 +44,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
+app.use(compression()); // Compress all routes
+app.use(helmet());
 // API route
 app.use("/api", apiRouter);
 // catch 404 and forward to error handler
