@@ -24,6 +24,9 @@ const postSchema = new mongoose.Schema({
   numberOfComments: {
     type: Number,
   },
+  image_src: {
+    type: String,
+  },
 });
 
 postSchema.virtual("utc_timestamp").get(function () {

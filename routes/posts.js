@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const postsController = require("../controllers/postsController");
 const postsCommentsRoute = require("./postsComments");
+const upload = require("../utils/multer");
 
 router.get("/", postsController.getAllPosts);
 
-router.post("/", postsController.createPost);
+router.post("/", upload.single("image"), postsController.createPost);
 
 router.get("/liked", postsController.getLikedPosts);
 
