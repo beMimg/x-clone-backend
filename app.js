@@ -37,7 +37,11 @@ require("./controllers/jwt-authController");
 
 app.use(passport.initialize());
 
-const allowedDomains = ["http://localhost:5173", "http://localhost:4173"];
+const allowedDomains = [
+  "http://localhost:5173",
+  "http://localhost:4173",
+  "https://x-clone-bemimg.netlify.app/",
+];
 app.use(cors({ credentials: true, origin: allowedDomains }));
 app.use(logger("dev"));
 app.use(express.json());
