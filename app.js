@@ -35,14 +35,14 @@ app.set("view engine", "pug");
 require("./controllers/github2-authController");
 require("./controllers/jwt-authController");
 
-app.use(passport.initialize());
-
 const allowedDomains = [
   "http://localhost:5173",
   "http://localhost:4173",
   "https://x-clone-bemimg.netlify.app",
 ];
 app.use(cors({ credentials: true, origin: allowedDomains }));
+
+app.use(passport.initialize());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
