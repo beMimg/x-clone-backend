@@ -68,7 +68,7 @@ router.get(
   "/github/callback",
   passport.authenticate("github", {
     session: false,
-    failureRedirect: "/login",
+    failureRedirect: "https://x-clone-bemimg.netlify.app/login",
   }),
   async function (req, res) {
     const user = req.user;
@@ -86,11 +86,15 @@ router.get(
       httpOnly: true,
       secure: true,
       maxAge: 604800000,
+      sameSite: "none",
     });
 
-    res.cookie("accessToken", accessToken.token, { maxAge: 300000 }); //5min
+    res.cookie("accessToken", accessToken.token, {
+      maxAge: 300000,
+      sameSite: "none",
+    }); //5min
 
-    res.redirect("http://localhost:5173/socials-saving");
+    res.redirect("https://x-clone-bemimg.netlify.app/socials-saving");
   }
 );
 
