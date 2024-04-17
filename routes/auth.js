@@ -43,7 +43,7 @@ router.post("/", async (req, res, next) => {
       httpOnly: true,
       secure: true,
       maxAge: 604800000,
-      sameSite: "None",
+      sameSite: "none",
     });
 
     res.json({
