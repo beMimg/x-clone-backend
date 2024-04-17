@@ -68,7 +68,7 @@ router.get(
   "/github/callback",
   passport.authenticate("github", {
     session: false,
-    failureRedirect: "https://x-clone-bemimg.netlify.app/login",
+    failureRedirect: "/login",
   }),
   async function (req, res) {
     const user = req.user;
@@ -94,7 +94,9 @@ router.get(
       sameSite: "none",
     }); //5min
 
-    res.redirect("https://x-clone-bemimg.netlify.app/socials-saving");
+    res.redirect(
+      "https://backendxclone-production.up.railway.app/api/auth/github/callback"
+    );
   }
 );
 
