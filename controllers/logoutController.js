@@ -18,11 +18,15 @@ exports.logout = async (req, res, next) => {
     if (!foundUser) {
       // need to pass the same options as when the cookie was set, otherwise the cookie will not be deleted
       // except maxAge (not needed)
-      res.clearCookie("jwt", { httpOnly: true, secure: true });
+      res.clearCookie("jwt", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      });
       return res.sendStatus(204);
     }
 
-    res.clearCookie("jwt", { httpOnly: true, secure: true });
+    res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "none" });
     foundUser.refreshToken = null;
     await foundUser.save();
     res.sendStatus(204);
