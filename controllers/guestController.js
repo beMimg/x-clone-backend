@@ -44,7 +44,7 @@ exports.createAndLogin = async (req, res, next) => {
 
     res.cookie("accessTokenRes", accessToken.token, {
       maxAge: 300000,
-      // secure: true,
+      secure: true,
       sameSite: "none",
     }); //5min
 

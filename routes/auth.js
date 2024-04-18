@@ -94,7 +94,7 @@ router.get(
     res.cookie("accessTokenRes", accessToken.token, {
       maxAge: 300000,
       sameSite: "none",
-      // secure: true,
+      secure: true,
     }); //5min
 
     res.redirect(`${FRONTEND_URL}/socials-saving`);
