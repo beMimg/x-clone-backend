@@ -79,5 +79,3 @@ exports.getRandomUsername = (first_name) => {
   const username = `${first_name}${randomString}`;
   return username;
 };
-
-console.log(this.getRandomUsername("jeff"));

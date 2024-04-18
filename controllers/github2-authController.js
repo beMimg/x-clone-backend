@@ -4,14 +4,14 @@ const User = require("../models/User");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const { randomColor } = require("../utils/utils");
+const { BASE_URL } = require("../utils/constants");
 
 passport.use(
   new GitHubStrategy(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL:
-        "https://backendxclone-production.up.railway.app/api/auth/github/callback",
+      callbackURL: `${BASE_URL}/api/auth/github/callback`,
     },
 
     async function (accessToken, refreshToken, profile, done) {

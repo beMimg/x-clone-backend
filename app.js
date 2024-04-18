@@ -9,11 +9,15 @@ const passport = require("passport");
 const cors = require("cors");
 const compression = require("compression");
 const helmet = require("helmet");
+const { BASE_URL, FRONTEND_URL } = require("./utils/constants");
 
 // routes
 const apiRouter = require("./routes/api");
 
 var app = express();
+
+console.log("BASE_URL:", BASE_URL);
+console.log("FRONTEND_URL:", FRONTEND_URL);
 
 // connection to database
 async function main(req, res, next) {
@@ -35,13 +39,7 @@ app.set("view engine", "pug");
 require("./controllers/github2-authController");
 require("./controllers/jwt-authController");
 
-const allowedDomains = [
-  "http://localhost:5173",
-  "http://localhost:4173",
-  "https://x-clone-bemimg.netlify.app",
-];
-app.use(cors({ credentials: true, origin: allowedDomains }));
-
+app.use(cors({ credentials: true, origin: FRONTEND_URL }));
 app.use(passport.initialize());
 app.use(logger("dev"));
 app.use(express.json());

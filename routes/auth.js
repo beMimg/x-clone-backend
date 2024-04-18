@@ -10,6 +10,7 @@ const {
   handleRefreshToken,
 } = require("../controllers/refresh-tokenController");
 const guestController = require("../controllers/guestController");
+const { BASE_URL, FRONTEND_URL } = require("../utils/constants");
 
 router.get("/refresh", handleRefreshToken);
 
@@ -68,8 +69,9 @@ router.get(
   "/github/callback",
   passport.authenticate("github", {
     session: false,
-    failureRedirect: "https://x-clone-bemimg.netlify.app/login",
+    failureRedirect: `${FRONTEND_URL}/login`,
   }),
+
   async function (req, res) {
     const user = req.user;
     const accessToken = utils.generateAccessToken(user);
@@ -94,7 +96,7 @@ router.get(
       sameSite: "none",
     }); //5min
 
-    res.redirect("https://x-clone-bemimg.netlify.app/socials-saving");
+    res.redirect(`${FRONTEND_URL}/socials-saving`);
   }
 );
 
