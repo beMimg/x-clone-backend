@@ -91,7 +91,7 @@ router.get(
       sameSite: "none",
     });
 
-    res.cookie("accessToken", accessToken.token, {
+    res.cookie("accessTokenRes", accessToken.token, {
       maxAge: 300000,
       sameSite: "none",
     }); //5min

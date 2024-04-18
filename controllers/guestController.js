@@ -41,7 +41,7 @@ exports.createAndLogin = async (req, res, next) => {
       maxAge: 604800000,
     });
 
-    res.cookie("accessToken", accessToken.token, { maxAge: 300000 }); //5min
+    res.cookie("accessTokenRes", accessToken.token, { maxAge: 300000 }); //5min
 
     res.status(200).json({ message: "Success" });
   } catch (err) {
