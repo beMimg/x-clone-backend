@@ -42,13 +42,7 @@ exports.createAndLogin = async (req, res, next) => {
       sameSite: "none",
     });
 
-    res.cookie("accessTokenRes", accessToken.token, {
-      maxAge: 300000,
-      secure: true,
-      sameSite: "none",
-    }); //5min
-
-    res.status(200).json({ message: "Success" });
+    res.status(200).json({ token: accessToken.token });
   } catch (err) {
     return next(err);
   }

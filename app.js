@@ -39,7 +39,9 @@ app.set("view engine", "pug");
 require("./controllers/github2-authController");
 require("./controllers/jwt-authController");
 
-app.use(cors({ credentials: true, origin: FRONTEND_URL }));
+app.use(
+  cors({ credentials: true, origin: [FRONTEND_URL, "http://localhost:4173"] })
+);
 app.use(passport.initialize());
 app.use(logger("dev"));
 app.use(express.json());
