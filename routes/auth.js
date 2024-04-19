@@ -59,47 +59,47 @@ router.post("/", async (req, res, next) => {
 
 // {session: false} otherwise error will accour saying that session is not required.
 // Not using sessions in this case.
-router.get(
-  "/github",
-  passport.authenticate("github", { session: false, scope: ["user:email"] })
-);
+// router.get(
+//   "/github",
+//   passport.authenticate("github", { session: false, scope: ["user:email"] })
+// );
 
-// If a user is sucessfully authenticated, token will be generated and sent back to the user.
-router.get(
-  "/github/callback",
-  passport.authenticate("github", {
-    session: false,
-    failureRedirect: `${FRONTEND_URL}/login`,
-  }),
+// // If a user is sucessfully authenticated, token will be generated and sent back to the user.
+// router.get(
+//   "/github/callback",
+//   passport.authenticate("github", {
+//     session: false,
+//     failureRedirect: `${FRONTEND_URL}/login`,
+//   }),
 
-  async function (req, res) {
-    const user = req.user;
-    const accessToken = utils.generateAccessToken(user);
+//   async function (req, res) {
+//     const user = req.user;
+//     const accessToken = utils.generateAccessToken(user);
 
-    const refreshToken = utils.generateRefreshToken(user);
+//     const refreshToken = utils.generateRefreshToken(user);
 
-    user.refreshToken = refreshToken.token;
-    await user.save();
+//     user.refreshToken = refreshToken.token;
+//     await user.save();
 
-    // Set the refresh token in the cookie with httpOnly and secure flag
-    // httpOnly flag makes sure that the cookie is not accessible via JavaScript
-    // This refreshToken will be used to generate a new access token when the current access token expires
-    res.cookie("jwt", refreshToken.token, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 604800000,
-      sameSite: "none",
-    });
+//     // Set the refresh token in the cookie with httpOnly and secure flag
+//     // httpOnly flag makes sure that the cookie is not accessible via JavaScript
+//     // This refreshToken will be used to generate a new access token when the current access token expires
+//     res.cookie("jwt", refreshToken.token, {
+//       httpOnly: true,
+//       secure: true,
+//       maxAge: 604800000,
+//       sameSite: "none",
+//     });
 
-    res.cookie("accessTokenRes", accessToken.token, {
-      maxAge: 300000,
-      sameSite: "none",
-      secure: true,
-    }); //5min
+//     res.cookie("accessTokenRes", accessToken.token, {
+//       maxAge: 300000,
+//       sameSite: "none",
+//       secure: true,
+//     }); //5min
 
-    res.redirect(`${FRONTEND_URL}/socials-saving`);
-  }
-);
+//     res.redirect(`${FRONTEND_URL}/socials-saving`);
+//   }
+// );
 
 router.post("/guest", guestController.createAndLogin);
 module.exports = router;
