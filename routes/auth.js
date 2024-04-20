@@ -89,12 +89,14 @@ router.get(
       secure: true,
       maxAge: 604800000,
       sameSite: "none",
+      path: "/",
     });
 
     res.cookie("accessTokenRes", accessToken.token, {
       maxAge: 300000,
       sameSite: "none",
       secure: true,
+      path: "/",
     }); //5min
 
     res.redirect(`${FRONTEND_URL}/socials-saving`);
