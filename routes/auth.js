@@ -81,24 +81,6 @@ router.get(
     user.refreshToken = refreshToken.token;
     await user.save();
 
-    // Set the refresh token in the cookie with httpOnly and secure flag
-    // httpOnly flag makes sure that the cookie is not accessible via JavaScript
-    // This refreshToken will be used to generate a new access token when the current access token expires
-    // res.cookie("jwt", refreshToken.token, {
-    //   httpOnly: true,
-    //   secure: true,
-    //   maxAge: 604800000,
-    //   sameSite: "none",
-    //   // path: "/",
-    // });
-
-    // res.cookie("accessTokenRes", accessToken.token, {
-    //   maxAge: 300000,
-    //   sameSite: "none",
-    //   secure: true,
-    //   // path: "/",
-    // }); //5min
-
     res.redirect(
       `${FRONTEND_URL}/socials-saving?accessToken=${accessToken.token}`
     );
