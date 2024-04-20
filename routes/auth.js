@@ -99,7 +99,9 @@ router.get(
     //   // path: "/",
     // }); //5min
 
-    res.redirect(`${FRONTEND_URL}/socials-saving?jwt=${refreshToken.token}`);
+    res.redirect(
+      `${FRONTEND_URL}/socials-saving?accessToken=${accessToken.token}`
+    );
   }
 );
 
