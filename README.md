@@ -1,6 +1,5 @@
 # X_CLONE Documentation
 
-**API's used**
 [Frontend X_CLONE repo](https://github.com/beMimg/frontend_x_clone)
 
 ## 1. Overview
