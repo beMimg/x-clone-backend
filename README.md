@@ -2,6 +2,10 @@
 
 [Frontend X_CLONE repo](https://github.com/beMimg/frontend_x_clone)
 
+![Screenshot 2024-04-23 171701](https://github.com/beMimg/frontend_x_clone/assets/126000960/e9d04d8c-30ea-4182-a683-7d759cd5df81)
+
+![x_clone](https://github.com/beMimg/frontend_x_clone/assets/126000960/3b1cc42b-b526-4e08-ad1d-131091643bba)
+
 ## 1. Overview
 
 X_CLONE is a social media platform inspired by X, built with React on the front end and Node.js, Express, and MongoDB on the back end. The app allows users to create accounts, post with images, follow other users, and engage in other social interactions.
