@@ -4,7 +4,7 @@ Welcome to the documentation for X Clone! X Clone is a social media platform ins
 ## Live Preview
 Experience X Clone in action: [Live Preview](https://x-clone-bemimg.netlify.app/)
 
-## Backend Repository
+## Frontend Repository
 Explore the frontend codebase on GitHub: [X Clone Frontend](https://github.com/beMimg/x-clone-frontend)
 
 ## Screenshots
