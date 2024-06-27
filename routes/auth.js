@@ -2,17 +2,12 @@ const express = require("express");
 const passport = require("passport");
 const { authenticate } = require("passport");
 const router = express.Router();
-const utils = require("../utils/utils");
+const utils = require("../utils/auth");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const {
-  handleRefreshToken,
-} = require("../controllers/refresh-tokenController");
 const guestController = require("../controllers/guestController");
 const { BASE_URL, FRONTEND_URL } = require("../utils/constants");
-
-router.get("/refresh", handleRefreshToken);
 
 router.post("/", async (req, res, next) => {
   try {
@@ -33,19 +28,9 @@ router.post("/", async (req, res, next) => {
 
     const accessToken = utils.generateAccessToken(user);
 
-    const refreshToken = utils.generateRefreshToken(user);
-
-    user.refreshToken = refreshToken.token;
-    await user.save();
     // Set the refresh token in the cookie with httpOnly and secure flag
     // httpOnly flag makes sure that the cookie is not accessible via JavaScript
     // This refreshToken will be used to generate a new access token when the current access token expires
-    res.cookie("jwt", refreshToken.token, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 604800000,
-      sameSite: "none",
-    });
 
     res.json({
       user: user.username,
@@ -76,16 +61,10 @@ router.get(
     const user = req.user;
     const accessToken = utils.generateAccessToken(user);
 
-    const refreshToken = utils.generateRefreshToken(user);
-
-    user.refreshToken = refreshToken.token;
-    await user.save();
-
-    res.redirect(
-      `${FRONTEND_URL}/socials-saving?accessToken=${accessToken.token}`
-    );
+    res.redirect(`${FRONTEND_URL}/oauth?accessToken=${accessToken.token}`);
   }
 );
 
 router.post("/guest", guestController.createAndLogin);
+
 module.exports = router;

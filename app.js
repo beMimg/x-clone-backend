@@ -40,7 +40,7 @@ require("./controllers/github2-authController");
 require("./controllers/jwt-authController");
 
 app.use(
-  cors({ credentials: true, origin: [FRONTEND_URL, "http://localhost:4173"] })
+  cors({ credentials: true, origin: [FRONTEND_URL, "http://localhost:3000"] })
 );
 app.use(passport.initialize());
 app.use(logger("dev"));
