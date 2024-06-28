@@ -1,4 +1,4 @@
-# X_CLONE Documentation
+# X CLONE Documentation
 Welcome to the documentation for X Clone! X Clone is a social media platform inspired by X, designed to foster social interactions and sharing within a community. Below you'll find an overview of the project, its features and technologies used.
 
 ## Live Preview
@@ -10,9 +10,9 @@ Explore the frontend codebase on GitHub: [X Clone Frontend](https://github.com/b
 ## Screenshots
 Take a glimpse at X Clone's interface:
 
-![Screenshot 2024-04-23 171701](https://github.com/beMimg/frontend_x_clone/assets/126000960/e9d04d8c-30ea-4182-a683-7d759cd5df81)
+![x-clone-bemimg netlify app_](https://github.com/beMimg/x-clone-backend/assets/126000960/879b28f2-d831-4a99-9188-1c3d417b3a73)
 
-![x_clone](https://github.com/beMimg/frontend_x_clone/assets/126000960/3b1cc42b-b526-4e08-ad1d-131091643bba)
+![x-clone-bemimg netlify app_(iPhone 14 Pro Max) (1)](https://github.com/beMimg/x-clone-backend/assets/126000960/0634953e-bbf3-4751-8938-d108a8fca808)
 
 ## Overview
 
@@ -31,14 +31,14 @@ X Clone offers the following key features:
 
 The following technologies are used to build X Clone:
 
-- **Frontend**: React, Tailwind CSS
+- **Frontend**: React, TypeScript, Tailwind CSS
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB, Mongoose
 - **Deployment**: Railway, Netlify
 
 ## Frontend Overview
 
-- X Clone uses React for the front end, with Tailwind CSS for styling.
+- X Clone uses React with TypeScript for the front end, with Tailwind CSS for styling.
 
 ## Backend Overview
 
