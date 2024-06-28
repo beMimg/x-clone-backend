@@ -4,7 +4,7 @@ const {
   getRandomUsername,
   randomColor,
 } = require("../utils/utils");
-const utils = require("../utils/utils");
+const utils = require("../utils/auth");
 
 exports.createAndLogin = async (req, res, next) => {
   try {
@@ -29,20 +29,12 @@ exports.createAndLogin = async (req, res, next) => {
     await user.save();
 
     const accessToken = utils.generateAccessToken(user);
-    const refreshToken = utils.generateRefreshToken(user);
-    user.refreshToken = refreshToken.token;
-    await user.save();
-    // Set the refresh token in the cookie with httpOnly and secure flag
-    // httpOnly flag makes sure that the cookie is not accessible via JavaScript
-    // This refreshToken will be used to generate a new access token when the current access token expires
-    res.cookie("jwt", refreshToken.token, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 604800000,
-      sameSite: "none",
-    });
 
-    res.status(200).json({ token: accessToken.token });
+    res.json({
+      user: user.username,
+      accessToken: accessToken.token,
+      expiresIn: accessToken.expiresIn,
+    });
   } catch (err) {
     return next(err);
   }
